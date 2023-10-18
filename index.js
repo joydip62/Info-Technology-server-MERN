@@ -36,6 +36,11 @@ async function run() {
       const productCollection = client.db('technologyDB').collection('products');
 
 
+      //   get all product
+      app.get('/products', async (req, res) => {
+          const result = await productCollection.find().toArray();
+          res.send(result);
+      })
       //   insert product data
       app.post("/products", async (req, res) => {
           const products = req.body;
