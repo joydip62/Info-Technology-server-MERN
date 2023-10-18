@@ -30,7 +30,27 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+      await client.connect();
+      
+
+      const productCollection = client.db('technologyDB').collection('products');
+
+
+      //   insert product data
+      app.post("/products", async (req, res) => {
+          const products = req.body;
+          const result = await productCollection.insertOne(products)
+        res.send(result);
+      });
+
+
+
+
+
+
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -42,22 +62,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
-
-
-
-
-
-
-
-
-
-
-app.get("/", async (req, res) => {
-    res.send('running');
-})
-
-
 
 
 app.listen(port, () => {
