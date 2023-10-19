@@ -52,6 +52,29 @@ async function run() {
       res.send(result);
     });
 
+    // update product
+    app.put("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const options = { upsert: true };
+
+      const filter = { _id: new ObjectId(id) };
+
+      const updatedData = {
+        $set: {
+          name: data.name,
+          brandName: data.brandName,
+          productType: data.productType,
+          price: data.price,
+          sortDescription: data.sortDescription,
+          rating: data.rating,
+          photo: data.photo
+        },
+      };
+      const result = await productCollection.updateOne(filter, updatedData, options);
+      res.send(result);
+    })
+
     /*
     ================== Cart =====================
     */
