@@ -52,6 +52,16 @@ async function run() {
       res.send(result);
     });
 
+    /*
+    ================== Cart =====================
+    */
+
+    //  get cart in myCart page
+    app.get("/product/cart", async (req, res) => {
+      const result = await productCartCollection.find().toArray();
+      res.send(result);
+    });
+
     //   insert product data into cart
     app.post("/product/cart", async (req, res) => {
       const cartProducts = req.body;
@@ -59,7 +69,13 @@ async function run() {
       res.send(result);
     });
 
-
+    // cart product delete
+    app.delete("/product/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await productCartCollection.deleteOne(query);
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
